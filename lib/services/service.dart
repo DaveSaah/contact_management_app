@@ -1,4 +1,5 @@
 import 'package:contact_management_app/models/models.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -61,3 +62,18 @@ Future<void> addContact(String name, String phoneNumber) async {
   }
 }
 
+void showErrorDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Error"),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text("OK"),
+        ),
+      ],
+    ),
+  );
+}
