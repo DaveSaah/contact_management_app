@@ -25,3 +25,16 @@ class Contact {
     };
   }
 }
+
+class ContactList {
+  final List<Contact> contacts;
+
+  const ContactList({required this.contacts});
+
+  factory ContactList.fromJson(List<dynamic> json) {
+    return ContactList(
+      contacts:
+          json.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList(),
+    );
+  }
+}

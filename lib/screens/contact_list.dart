@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<Contact> fetchContact() async {
+Future<ContactList> fetchAllContacts() async {
   final response = await http.get(Uri.parse(
-    'https://apps.ashesi.edu.gh/contactmgt/actions/get_a_contact_mob?contid=6',
+    'https://apps.ashesi.edu.gh/contactmgt/actions/get_all_contact_mob',
   ));
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Contact.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    List<dynamic> jsonData = jsonDecode(response.body);
+    return ContactList.fromJson(jsonData);
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load contacts');
   }
 }
 
@@ -27,27 +24,34 @@ class ContactListScreen extends StatefulWidget {
 }
 
 class _ContactListScreen extends State<ContactListScreen> {
-  late Future<Contact> futureContact;
-
-  @override
-  void initState() {
-    super.initState();
-    futureContact = fetchContact();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Contact>(
-      future: futureContact,
+    return FutureBuilder<ContactList>(
+      future: fetchAllContacts(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data!.pname);
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return Text("Unable to get contact list");
+        } else if (!snapshot.hasData || snapshot.data!.contacts.isEmpty) {
+          return Text("No contacts available");
         }
 
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
+        List<Contact> contacts = snapshot.data!.contacts;
+        return ListView.builder(
+          itemCount: contacts.length,
+          itemBuilder: (context, index) {
+            final contact = contacts[index];
+
+            return ListTile(
+              leading: CircleAvatar(
+                child: Text(contact.pname[0]),
+              ),
+              title: Text(contact.pname),
+              subtitle: Text(contact.pphone),
+            );
+          },
+        );
       },
     );
   }
