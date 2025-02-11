@@ -44,3 +44,20 @@ Future<void> editContact(Contact contact) async {
     throw Exception('Failed to edit contact');
   }
 }
+
+Future<void> addContact(String name, String phoneNumber) async {
+  final response = await http.post(
+    Uri.parse(
+      'https://apps.ashesi.edu.gh/contactmgt/actions/add_contact_mob',
+    ),
+    body: {
+      'ufullname': name,
+      'uphonename': phoneNumber,
+    }, // Send as form data
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to edit contact');
+  }
+}
+
