@@ -40,3 +40,19 @@ Future<void> deleteContact(int id) async {
   }
 }
 
+Future<void> editContact(String name, String phone, int id) async {
+  final response = await http.post(
+    Uri.parse(
+      'https://apps.ashesi.edu.gh/contactmgt/actions/update_contact',
+    ),
+    body: {
+      'cid': id.toString(),
+      'ufullname': name,
+      'uphonename': phone,
+    }, // Send as form data
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to edit contact');
+  }
+}
