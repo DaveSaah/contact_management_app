@@ -26,3 +26,17 @@ Future<ContactList> fetchAllContacts() async {
     throw Exception('Failed to load contacts');
   }
 }
+
+Future<void> deleteContact(int id) async {
+  final response = await http.post(
+    Uri.parse(
+      'https://apps.ashesi.edu.gh/contactmgt/actions/delete_contact',
+    ),
+    body: {'cid': id.toString()}, // Send as form data
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete contact');
+  }
+}
+
