@@ -40,15 +40,15 @@ Future<void> deleteContact(int id) async {
   }
 }
 
-Future<void> editContact(String name, String phone, int id) async {
+Future<void> editContact(Contact contact) async {
   final response = await http.post(
     Uri.parse(
       'https://apps.ashesi.edu.gh/contactmgt/actions/update_contact',
     ),
     body: {
-      'cid': id.toString(),
-      'ufullname': name,
-      'uphonename': phone,
+      'cid': contact.pid.toString(),
+      'cname': contact.pname,
+      'cnum': contact.pphone,
     }, // Send as form data
   );
 
