@@ -9,6 +9,9 @@ class Contact {
     required this.pphone,
   });
 
+  /// Parses a json into a [Contact] object
+  ///
+  /// Throws [FormatException] if json schema doesn't match object fields
   factory Contact.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
@@ -31,6 +34,7 @@ class ContactList {
 
   const ContactList({required this.contacts});
 
+  /// Parses a json into a [ContactList] object
   factory ContactList.fromJson(List<dynamic> json) {
     return ContactList(
       contacts:

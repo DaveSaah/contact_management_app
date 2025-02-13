@@ -67,8 +67,11 @@ class AboutScreen extends StatelessWidget {
             height: 8,
           ),
           Text(
-            "This app allows users to add, edit, and delete contacts with ease. "
-            "It provides a simple and user-friendly interface for managing personal contacts efficiently.",
+            """
+            This app allows users to add, edit, and delete contacts with ease. 
+            It provides a simple and user-friendly interface for managing 
+            personal contacts efficiently.
+            """,
           ),
         ],
       ),

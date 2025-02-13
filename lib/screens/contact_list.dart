@@ -1,7 +1,31 @@
+import 'package:contact_management_app/custom/custom.dart';
 import 'package:contact_management_app/models/models.dart';
 import 'package:contact_management_app/screens/edit_contact.dart';
 import 'package:contact_management_app/services/service.dart';
 import 'package:flutter/material.dart';
+
+class ContactListScreen extends StatefulWidget {
+  const ContactListScreen({super.key});
+
+  @override
+  State<ContactListScreen> createState() => _ContactListScreenState();
+}
+
+class _ContactListScreenState extends State<ContactListScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return ContactsListView();
+  }
+}
+
+class ContactsListView extends StatefulWidget {
+  const ContactsListView({
+    super.key,
+  });
+
+  @override
+  State<ContactsListView> createState() => _ContactsListViewState();
+}
 
 class ContactListItems extends StatefulWidget {
   final List<Contact> contacts;
@@ -17,22 +41,6 @@ class ContactListItems extends StatefulWidget {
 
   @override
   State<ContactListItems> createState() => _ContactListItemsState();
-}
-
-class ContactListScreen extends StatefulWidget {
-  const ContactListScreen({super.key});
-
-  @override
-  State<ContactListScreen> createState() => _ContactListScreenState();
-}
-
-class ContactsListView extends StatefulWidget {
-  const ContactsListView({
-    super.key,
-  });
-
-  @override
-  State<ContactsListView> createState() => _ContactsListViewState();
 }
 
 class _ContactListItemsState extends State<ContactListItems> {
@@ -71,13 +79,6 @@ class _ContactListItemsState extends State<ContactListItems> {
         );
       },
     );
-  }
-}
-
-class _ContactListScreenState extends State<ContactListScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return ContactsListView();
   }
 }
 
@@ -123,10 +124,13 @@ class _ContactsListViewState extends State<ContactsListView> {
         await deleteContact(id);
         _fetchContacts(); // Refresh contacts after deletion
       } catch (e) {
-        showErrorDialog(
-          context,
-          "Failed to delete contact. Please try again.",
-        );
+        // check if widget is mounted before using context
+        if (mounted) {
+          showErrorDialog(
+            context,
+            "Failed to delete contact. Please try again.",
+          );
+        }
       }
     }
   }
@@ -142,10 +146,13 @@ class _ContactsListViewState extends State<ContactsListView> {
         await editContact(updatedContact);
         _fetchContacts(); // Refresh contacts after update
       } catch (e) {
-        showErrorDialog(
-          context,
-          "Failed to edit contact. Please try again.",
-        );
+        // check if widget is mounted before using context
+        if (mounted) {
+          showErrorDialog(
+            context,
+            "Failed to edit contact. Please try again.",
+          );
+        }
       }
     }
   }
@@ -156,8 +163,9 @@ class _ContactsListViewState extends State<ContactsListView> {
     });
   }
 
+  /// Refresh contacts on pull-down
   Future<void> _refreshContacts() async {
-    _fetchContacts(); // Refresh contacts on pull-down
+    _fetchContacts();
   }
 
   Future<bool> _showDeleteConfirmationDialog() async {
@@ -175,8 +183,15 @@ class _ContactsListViewState extends State<ContactsListView> {
               ElevatedButton(
                 onPressed: () =>
                     Navigator.of(context).pop(true), // Confirm deletion
-                child: Text("Delete", style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),

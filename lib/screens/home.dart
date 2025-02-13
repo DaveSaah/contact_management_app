@@ -3,7 +3,7 @@ import 'package:contact_management_app/screens/add_contact.dart';
 import 'package:contact_management_app/screens/contact_list.dart';
 import 'package:flutter/material.dart';
 
-/// HomeScreen defines the initial page of the application
+/// Defines the initial page of the application.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -12,13 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  /// _selectedIndex represents the navigation item
+  /// Represents the navigation item
   int _selectedIndex = 0;
-
-  //static const TextStyle optionStyle = TextStyle(
-  //  fontSize: 30,
-  //  fontWeight: FontWeight.bold,
-  //);
 
   static const _widgetOpts = [
     ContactListScreen(),
@@ -42,7 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_appbarOpts[_selectedIndex]),
+        title: Text(
+          _appbarOpts[_selectedIndex],
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        backgroundColor: Colors.deepPurpleAccent,
       ),
       body: Center(
         child: _widgetOpts[_selectedIndex],

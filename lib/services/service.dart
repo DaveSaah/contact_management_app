@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:contact_management_app/models/models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+/// Fetches all contacts from server.
+///
+/// Throws [HttpException] if request is unsuccessful.
 Future<ContactList> fetchAllContacts() async {
   final response = await http.get(Uri.parse(
     'https://apps.ashesi.edu.gh/contactmgt/actions/get_all_contact_mob',
@@ -11,10 +15,13 @@ Future<ContactList> fetchAllContacts() async {
     List<dynamic> jsonData = jsonDecode(response.body);
     return ContactList.fromJson(jsonData);
   } else {
-    throw Exception('Failed to load contacts');
+    throw HttpException('Failed to load contacts');
   }
 }
 
+/// Deletes a contact using [id].
+///
+/// throws [HttpException] if request is unsuccessful.
 Future<void> deleteContact(int id) async {
   final response = await http.post(
     Uri.parse(
@@ -24,10 +31,13 @@ Future<void> deleteContact(int id) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to delete contact');
+    throw HttpException('Failed to delete contact');
   }
 }
 
+/// Edits a contact.
+///
+/// throws [HttpException] if request is unsuccessful.
 Future<void> editContact(Contact contact) async {
   final response = await http.post(
     Uri.parse(
@@ -41,10 +51,13 @@ Future<void> editContact(Contact contact) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to edit contact');
+    throw HttpException('Failed to edit contact');
   }
 }
 
+/// Adds a contact using [name] and [phoneNumber].
+///
+/// throws [HttpException] if request is unsuccessful.
 Future<void> addContact(String name, String phoneNumber) async {
   final response = await http.post(
     Uri.parse(
@@ -57,6 +70,6 @@ Future<void> addContact(String name, String phoneNumber) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to edit contact');
+    throw HttpException('Failed to edit contact');
   }
 }

@@ -1,3 +1,4 @@
+import 'package:contact_management_app/custom/custom.dart';
 import 'package:contact_management_app/services/service.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +51,7 @@ class _AddContactScreenState extends State<AddContactScreen> {
     );
   }
 
+  /// Clears input fields after submitting form
   @override
   void dispose() {
     _nameController.dispose();
@@ -74,16 +76,22 @@ class _AddContactScreenState extends State<AddContactScreen> {
         _nameController.clear(); // Clear name field
         _phoneController.clear(); // Clear phone field
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Contact added successfully!"),
-          ),
-        );
+        // check if widget is mounted before using context
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Contact added successfully!"),
+            ),
+          );
+        }
       } catch (e) {
-        showErrorDialog(
-          context,
-          "Failed to add contact. Please try again.",
-        );
+        // check if widget is mounted before using context
+        if (mounted) {
+          showErrorDialog(
+            context,
+            "Failed to add contact. Please try again.",
+          );
+        }
       } finally {
         setState(() => _isLoading = false);
       }
